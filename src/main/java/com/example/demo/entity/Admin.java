@@ -8,15 +8,5 @@ import jakarta.persistence.Entity;
 
 public class Admin extends User {
 
-    private String role; // Par exemple, "superadmin", "manager", etc.
 
-    // Getters et Setters
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-    public Admin() {}
 }

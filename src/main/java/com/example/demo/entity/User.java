@@ -18,6 +18,24 @@ public class User {
     private String telephone;
     private boolean verified = false;
 
+    private String role;
+    /*public enum UserRole {
+        USER,
+        ADMIN
+    }*/
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+
+
+
+
     // Getters et Setters
     public Long getId() {
         return id;

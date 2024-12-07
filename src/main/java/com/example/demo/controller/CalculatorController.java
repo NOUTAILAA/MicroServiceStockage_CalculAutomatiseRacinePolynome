@@ -1,11 +1,25 @@
 package com.example.demo.controller;
 
 import java.security.SecureRandom;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwsHeader;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.Calculator;
@@ -23,26 +37,66 @@ public class CalculatorController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private JwtEncoder jwtEncoder;
+
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
     @PostMapping("/login")
-    public ResponseEntity<String> loginCalculator(@RequestBody Calculator loginRequest) {
+    public ResponseEntity<Map<String, String>> loginCalculator(@RequestBody Calculator loginRequest) {
         System.out.println("Tentative de connexion pour le calculator : " + loginRequest.getUsername());
 
-        Optional<Calculator> calculator = userService.findCalculatorByUsername(loginRequest.getUsername());
+        Optional<Calculator> calculator = userService.findCalculatorByEmail(loginRequest.getEmail());
 
-        if (calculator.isPresent() && calculator.get().getPassword().equals(loginRequest.getPassword())) {
+        if (calculator.isPresent() && loginRequest.getPassword().equals(calculator.get().getPassword())) {
             if (!calculator.get().isVerified()) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Veuillez vérifier votre e-mail.");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", "Veuillez vérifier votre e-mail."));
             }
+
+            String email = loginRequest.getEmail();
+            String password = loginRequest.getPassword();
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, password)
+            );
+
+            Instant instant = Instant.now();
+
+
+            List<String> roles = authentication.getAuthorities().stream()
+                    .map(authority -> authority.getAuthority().replace("ROLE_", ""))
+                    .collect(Collectors.toList());
+
+            Long userId = calculator.get().getId();
+
+            JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
+                    .subject(calculator.get().getEmail())
+                    .issuedAt(instant)
+                    .expiresAt(instant.plus(100, ChronoUnit.DAYS))
+                    .claim("scope", roles)
+                    .claim("id", userId)
+                    .build();
+
+            JwtEncoderParameters jwtEncoderParameters = JwtEncoderParameters.from(
+                    JwsHeader.with(MacAlgorithm.HS512).build(),
+                    jwtClaimsSet
+            );
+
+            String jwt = jwtEncoder.encode(jwtEncoderParameters).getTokenValue();
+
             try {
                 emailService.sendLoginNotification(calculator.get().getEmail(), calculator.get().getUsername());
             } catch (MessagingException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'envoi de la notification par e-mail.");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Erreur lors de l'envoi de la notification par e-mail."));
             }
-            return ResponseEntity.ok("Connexion réussie.");
+
+            return ResponseEntity.ok(Map.of("token", jwt));
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Nom d'utilisateur ou mot de passe incorrect.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Nom d'utilisateur ou mot de passe incorrect."));
         }
     }
+
+
 
     @PostMapping("/register")
     public ResponseEntity<String> registerCalculator(@RequestBody Calculator calculator) {

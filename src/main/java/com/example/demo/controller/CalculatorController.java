@@ -43,25 +43,32 @@ public class CalculatorController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> loginCalculator(@RequestBody Calculator loginRequest) {
         System.out.println("Tentative de connexion pour le calculator : " + loginRequest.getUsername());
 
+
+
+
         Optional<Calculator> calculator = userService.findCalculatorByEmail(loginRequest.getEmail());
 
-        if (calculator.isPresent() && loginRequest.getPassword().equals(calculator.get().getPassword())) {
+        if (calculator.isPresent() && passwordEncoder.matches(loginRequest.getPassword(), calculator.get().getPassword())) {
             if (!calculator.get().isVerified()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", "Veuillez vérifier votre e-mail."));
             }
 
             String email = loginRequest.getEmail();
             String password = loginRequest.getPassword();
+
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password)
             );
 
             Instant instant = Instant.now();
-
 
             List<String> roles = authentication.getAuthorities().stream()
                     .map(authority -> authority.getAuthority().replace("ROLE_", ""))
@@ -98,6 +105,7 @@ public class CalculatorController {
 
 
 
+
     @PostMapping("/register")
     public ResponseEntity<String> registerCalculator(@RequestBody Calculator calculator) {
         if (userService.findCalculatorByUsername(calculator.getUsername()).isPresent()) {
@@ -107,6 +115,9 @@ public class CalculatorController {
         if (userService.findCalculatorByEmail(calculator.getEmail()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email déjà utilisé.");
         }
+
+        String pwd = passwordEncoder.encode(calculator.getPassword());
+        calculator.setPassword(pwd);
 
         userService.saveCalculator(calculator);
 
@@ -147,7 +158,10 @@ public class CalculatorController {
         }
 
         String newPassword = generateRandomPassword();
-        calculator.setPassword(newPassword);
+
+        String pwd = passwordEncoder.encode(newPassword);
+
+        calculator.setPassword(pwd);
         userService.saveCalculator(calculator);
 
         // Send password reset email

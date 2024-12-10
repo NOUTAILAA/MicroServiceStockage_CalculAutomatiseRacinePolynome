@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,12 +32,16 @@ public class UserController {
     private UserService userService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Map<String, Object> userMap) {
         String username = (String) userMap.get("username");
         String email = (String) userMap.get("email");
-        String password = (String) userMap.get("password");
+
+        String password = bCryptPasswordEncoder.encode((String) userMap.get("password"));
+
         String telephone = (String) userMap.get("telephone");
         String department = (String) userMap.get("department");
         Boolean isCalculator = (Boolean) userMap.getOrDefault("isCalculator", false);
@@ -117,7 +122,7 @@ public class UserController {
         }
 
         String newPassword = generateRandomPassword();
-        user.setPassword(newPassword);
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
         userService.saveUser(user);
 
         // Send password reset email
@@ -149,6 +154,7 @@ public class UserController {
         userService.saveAdmin(admin);
         return ResponseEntity.status(HttpStatus.CREATED).body("Admin enregistré avec succès.");
     }
+
     @PostMapping("/register-calculator")
     public ResponseEntity<String> registerCalculator(@RequestBody Calculator calculator) {
         if (userService.findUserByUsername(calculator.getUsername()).isPresent()) {

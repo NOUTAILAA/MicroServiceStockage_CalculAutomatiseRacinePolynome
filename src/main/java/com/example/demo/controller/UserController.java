@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -164,5 +165,47 @@ public class UserController {
         userService.saveCalculator(calculator);
         return ResponseEntity.status(HttpStatus.CREATED).body("Calculator enregistré avec succès.");
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateUserProfile(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
+        Optional<User> optionalUser = userService.findUserById(id);
+
+        if (!optionalUser.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utilisateur non trouvé.");
+        }
+
+        User user = optionalUser.get();
+
+        // Mise à jour des champs modifiables
+        if (updates.containsKey("username")) {
+            String newUsername = (String) updates.get("username");
+            if (userService.findUserByUsername(newUsername).isPresent() && !newUsername.equals(user.getUsername())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Nom d'utilisateur déjà pris.");
+            }
+            user.setUsername(newUsername);
+        }
+
+        if (updates.containsKey("email")) {
+            String newEmail = (String) updates.get("email");
+            if (userService.findUserByEmail(newEmail).isPresent() && !newEmail.equals(user.getEmail())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Email déjà utilisé.");
+            }
+            user.setEmail(newEmail);
+        }
+
+        if (updates.containsKey("telephone")) {
+            user.setTelephone((String) updates.get("telephone"));
+        }
+
+        if (updates.containsKey("password")) {
+            String newPassword = bCryptPasswordEncoder.encode((String) updates.get("password"));
+            user.setPassword(newPassword);
+        }
+
+        // Sauvegarder les modifications
+        userService.saveUser(user);
+
+        return ResponseEntity.ok("Profil mis à jour avec succès.");
+    }
+
 
 }

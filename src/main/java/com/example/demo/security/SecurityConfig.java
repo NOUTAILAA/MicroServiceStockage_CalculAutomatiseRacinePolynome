@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/register" ,"/api/users/verify","/api/users/forgot-password",
                                 "/api/users/register-admin","/api/users/register-calculator",
                                 "/api/calculators/login","/api/calculators/register","/api/calculators/verify",
-                                "/api/calculators/forgot-password","/api/admins/register","/api/admins/register","/api/store-polynomial").permitAll()
+                                "/api/calculators/forgot-password","/api/admins/register","/api/admins/register","/api/store-polynomial", "/api/users/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder())))

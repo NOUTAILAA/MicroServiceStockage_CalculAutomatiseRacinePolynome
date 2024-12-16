@@ -61,7 +61,9 @@ public class UserService {
     public Optional<Calculator> findCalculatorByEmail(String email) {
         return calculatorRepository.findByEmail(email);
     }
-
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
    
 
 }

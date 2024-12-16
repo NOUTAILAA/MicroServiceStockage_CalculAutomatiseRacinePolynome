@@ -11,10 +11,17 @@ import java.util.Optional;
 
 public interface PolynomialRepository extends JpaRepository<Polynomial, Long> {
 
-    @Query("SELECT p FROM Polynomial p WHERE p.simplifiedExpression = :simplifiedExpression AND p.factoredExpression = :factoredExpression AND p.roots = :roots")
-    Optional<Polynomial> findDuplicate(
-            @Param("simplifiedExpression") String simplifiedExpression,
-            @Param("factoredExpression") String factoredExpression,
-            @Param("roots") List<String> roots
-    );
+	@Query("SELECT p FROM Polynomial p WHERE p.simplifiedExpression = :simplifiedExpression " +
+		       "AND p.factoredExpression = :factoredExpression " +
+		       "AND p.roots = :roots " +
+		       "AND p.user.id = :userId")
+		Optional<Polynomial> findDuplicate(
+		        @Param("simplifiedExpression") String simplifiedExpression,
+		        @Param("factoredExpression") String factoredExpression,
+		        @Param("roots") List<String> roots,
+		        @Param("userId") Long userId
+		);
+
+    List<Polynomial> findByUserId(Long userId);
+
 }

@@ -110,7 +110,7 @@ public class CalculatorController {
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Erreur lors de l'envoi de la notification par e-mail."));
                 }
 
-                return ResponseEntity.ok(Map.of("token", jwt));
+                return ResponseEntity.ok(Map.of("token", jwt, "userId", String.valueOf(userId)));
             } catch (Exception e) {
                 System.err.println("Erreur lors de l'authentification : " + e.getMessage());
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Erreur lors de l'authentification."));

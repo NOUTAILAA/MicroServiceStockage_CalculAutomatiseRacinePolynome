@@ -19,7 +19,8 @@ public class PolynomialService {
         Optional<Polynomial> existingPolynomial = findDuplicatePolynomial(
                 polynomialData.getSimplifiedExpression(),
                 polynomialData.getFactoredExpression(),
-                polynomialData.getRoots()
+                polynomialData.getRoots(),
+                polynomialData.getUser().getId()
         );
 
         if (existingPolynomial.isEmpty()) {
@@ -27,14 +28,18 @@ public class PolynomialService {
         }
     }
 
-    private Optional<Polynomial> findDuplicatePolynomial(String simplifiedExpression, String factoredExpression, List<String> roots) {
-        return polynomialRepository.findDuplicate(simplifiedExpression, factoredExpression, roots);
+    private Optional<Polynomial> findDuplicatePolynomial(String simplifiedExpression, String factoredExpression, List<String> roots, Long userId) {
+        return polynomialRepository.findDuplicate(simplifiedExpression, factoredExpression, roots, userId);
     }
+
     public List<Polynomial> getAllPolynomials() {
         return polynomialRepository.findAll();
     }
 
     public Optional<Polynomial> getPolynomialById(Long id) {
         return polynomialRepository.findById(id);
+    }
+    public List<Polynomial> getPolynomialsByUserId(Long userId) {
+        return polynomialRepository.findByUserId(userId);
     }
 }

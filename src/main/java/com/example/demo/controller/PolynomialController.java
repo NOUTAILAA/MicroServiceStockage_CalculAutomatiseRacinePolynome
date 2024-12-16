@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Polynomial;
+import com.example.demo.entity.PolynomialDTO;
+import com.example.demo.entity.User;
 import com.example.demo.service.PolynomialService;
+import com.example.demo.service.UserService;
 
 @RestController
 @RequestMapping("/api")
@@ -23,12 +28,45 @@ public class PolynomialController {
 
     @Autowired
     private PolynomialService polynomialService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/store-polynomial")
-    public ResponseEntity<String> storePolynomial(@RequestBody Polynomial polynomialData) {
-        polynomialService.savePolynomial(polynomialData); // Ne fait rien si le polynôme existe déjà
-        return ResponseEntity.ok("Opération terminée."); // Réponse générique de succès
+    public ResponseEntity<String> storePolynomial(@RequestBody Map<String, Object> requestBody) {
+        try {
+            // Extraire les données de la requête
+            String simplifiedExpression = (String) requestBody.get("simplifiedExpression");
+            String factoredExpression = (String) requestBody.get("factoredExpression");
+            List<String> roots = (List<String>) requestBody.get("roots");
+            Long userId = Long.valueOf(requestBody.get("userId").toString());
+
+            if (userId == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID is required.");
+            }
+
+            // Récupérer l'utilisateur associé au userId
+            Optional<User> userOptional = userService.findById(userId);
+            if (userOptional.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+            }
+
+            // Créer une nouvelle instance de Polynomial
+            Polynomial polynomial = new Polynomial();
+            polynomial.setSimplifiedExpression(simplifiedExpression);
+            polynomial.setFactoredExpression(factoredExpression);
+            polynomial.setRoots(roots);
+            polynomial.setUser(userOptional.get()); // Associer l'utilisateur
+
+            // Enregistrer le polynôme
+            polynomialService.savePolynomial(polynomial);
+
+            return ResponseEntity.ok("Polynomial stored successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
     }
+
+
 
 
     @GetMapping("/polynomials")
@@ -52,4 +90,26 @@ public class PolynomialController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+    @GetMapping("/users/{userId}/polynomials")
+    public ResponseEntity<List<PolynomialDTO>> getPolynomialsByUserId(@PathVariable Long userId) {
+        Optional<User> userOptional = userService.findById(userId);
+
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        List<Polynomial> polynomials = polynomialService.getPolynomialsByUserId(userId);
+
+        if (polynomials.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+
+        // Convertir les polynômes en DTO
+        List<PolynomialDTO> polynomialDTOs = polynomials.stream()
+                .map(PolynomialDTO::new)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(polynomialDTOs);
+    }
+
 }

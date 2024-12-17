@@ -66,4 +66,7 @@ public class UserService {
     }
    
 
+    public Optional<Admin> findAdminByEmail(String email) {
+        return adminRepository.findByEmail(email);
+}
 }

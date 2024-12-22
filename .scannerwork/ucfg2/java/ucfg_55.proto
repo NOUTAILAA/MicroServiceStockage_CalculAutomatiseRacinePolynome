@@ -1,0 +1,46 @@
+
+úcom.example.demo.service.PolynomialService#findDuplicatePolynomial(Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Long;)Ljava/util/Optional;k
+aC:/Users/nouta/Desktop/polynome-fix/src/main/java/com/example/demo/service/PolynomialService.java! (8"1*÷
+1   (#±
+Æ
+   (#6
+%00com.example.demo.repository.PolynomialRepository"__id*d
+
+__unknown_file (H*F,
+*com.example.demo.service.PolynomialService"
+polynomialRepositoryÍÁ
+   (j
+%1java.util.Optional"òcom.example.demo.repository.PolynomialRepository#findDuplicate(Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Long;)Ljava/util/Optional;*T
+
+__unknown_file (8
+6
+%00com.example.demo.repository.PolynomialRepository*F
+
+__unknown_file (*
+(
+simplifiedExpressionjava.lang.String*D
+
+__unknown_file ((
+&
+factoredExpressionjava.lang.String*5
+
+__unknown_file (
+
+rootsjava.util.List*6
+
+__unknown_file (
+
+userIdjava.lang.Long2SfindDuplicate(Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Long;)"&
+   (k
+
+%1java.util.Optional:4
+9 (U(
+simplifiedExpressionjava.lang.String:2
+V (p&
+factoredExpressionjava.lang.String:$
+	q (Ñ
+rootsjava.util.List:&
+
+Ö (ê
+userIdjava.lang.LongB.,
+*com.example.demo.service.PolynomialService

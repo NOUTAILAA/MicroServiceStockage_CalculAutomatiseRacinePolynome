@@ -1,0 +1,10 @@
+com.example.demo.controller.CalculatorController#verifyEmail(Ljava/lang/String;)LResponseEntity;
+false
+ce58701ad6a65401e03d5210f691c6bf
+java.util.Optional#get()Ljava/lang/Object;
+java.util.Optional#isPresent()Z
+==
+!unknownMethod! !unknownMethod!
+findCalculatorByEmail com.example.demo.service.UserService#findCalculatorByEmail(Ljava/lang/String;)Ljava/util/Optional;
+saveCalculator com.example.demo.service.UserService#saveCalculator(Lcom/example/demo/entity/Calculator;)V
+setVerified com.example.demo.entity.User#setVerified(Z)V

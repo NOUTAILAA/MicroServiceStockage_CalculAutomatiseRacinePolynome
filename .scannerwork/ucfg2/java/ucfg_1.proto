@@ -1,0 +1,16 @@
+
+Wcom.example.demo.service.UserService#findUserById(Ljava/lang/Long;)Ljava/util/Optional;e
+[C:/Users/nouta/Desktop/polynome-fix/src/main/java/com/example/demo/service/UserService.java (&"1*Ã
+1   (Ÿ
+œ
+   (0
+%0*com.example.demo.repository.UserRepository"__id*X
+
+__unknown_file (<*:&
+$com.example.demo.service.UserService"
+userRepository"
+   (+
+"": 
+' (.
+idjava.lang.LongB(&
+$com.example.demo.service.UserServiceH

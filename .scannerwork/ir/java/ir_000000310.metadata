@@ -1,0 +1,5 @@
+com.example.demo.security.SecurityConfig#authenticationManager(LUserDetailsService;LPasswordEncoder;)LAuthenticationManager;
+false
+468c4e803c97ba1c8500aecdb2cc7a1a
+==
+!unknownMethod! !unknownMethod!

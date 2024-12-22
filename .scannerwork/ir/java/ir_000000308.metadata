@@ -1,0 +1,4 @@
+com.example.demo.security.SecurityConfig#jwtEncoder()LJwtEncoder;
+false
+69cdf2e85de07733b50b0c46400c206e
+java.lang.String#getBytes()[B

@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private static final String ROLE_PREFIX = "ROLE_";
+    private static final Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -33,13 +35,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(user.getRole().split(","))
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))  // Direct use of the string if ROLE_PREFIX is unused elsewhere
                         .collect(Collectors.toList());
 
-        System.out.println("Utilisateur chargé : " + user.getEmail());
-        System.out.println("Rôles : " + authorities);
-
+        logger.info("Utilisateur chargé : {}", user.getEmail());
+        logger.info("Rôles : {}", authorities);
+        
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
-
 }

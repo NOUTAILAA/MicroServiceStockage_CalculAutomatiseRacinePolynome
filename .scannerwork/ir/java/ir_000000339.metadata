@@ -1,0 +1,9 @@
+com.example.demo.entity.PolynomialDTO#<init>(Lcom/example/demo/entity/Polynomial;)V
+false
+834fcadc2d26731b1f6343e73eec8605
+==
+getFactoredExpression com.example.demo.entity.Polynomial#getFactoredExpression()Ljava/lang/String;
+getId com.example.demo.entity.Polynomial#getId()Ljava/lang/Long;
+getRoots com.example.demo.entity.Polynomial#getRoots()Ljava/util/List;
+getSimplifiedExpression com.example.demo.entity.Polynomial#getSimplifiedExpression()Ljava/lang/String;
+toString java.lang.Object#toString()Ljava/lang/String;

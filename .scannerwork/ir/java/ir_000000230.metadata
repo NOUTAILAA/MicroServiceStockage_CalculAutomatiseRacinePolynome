@@ -1,0 +1,5 @@
+com.example.demo.service.UserService#findCalculatorByUsername(Ljava/lang/String;)Ljava/util/Optional;
+false
+282bfecbd503993e37f817b596893b81
+==
+findByUsername com.example.demo.repository.CalculatorRepository#findByUsername(Ljava/lang/String;)Ljava/util/Optional;

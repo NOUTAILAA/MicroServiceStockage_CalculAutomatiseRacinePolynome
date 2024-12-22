@@ -1,0 +1,15 @@
+com.example.demo.controller.CalculatorController#updateCalculator(Ljava/lang/Long;Lcom/example/demo/entity/Calculator;)LResponseEntity;
+false
+c50a5bc470f9c8e824ae6d3598d8b68c
+java.util.Optional#get()Ljava/lang/Object;
+java.util.Optional#isPresent()Z
+==
+!unknownMethod! !unknownMethod!
+findCalculatorById com.example.demo.service.UserService#findCalculatorById(Ljava/lang/Long;)Ljava/util/Optional;
+getEmail com.example.demo.entity.User#getEmail()Ljava/lang/String;
+getTelephone com.example.demo.entity.User#getTelephone()Ljava/lang/String;
+getUsername com.example.demo.entity.User#getUsername()Ljava/lang/String;
+saveCalculator com.example.demo.service.UserService#saveCalculator(Lcom/example/demo/entity/Calculator;)V
+setEmail com.example.demo.entity.User#setEmail(Ljava/lang/String;)V
+setTelephone com.example.demo.entity.User#setTelephone(Ljava/lang/String;)V
+setUsername com.example.demo.entity.User#setUsername(Ljava/lang/String;)V

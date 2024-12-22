@@ -1,0 +1,10 @@
+com.example.demo.controller.UserController#verifyEmail(Ljava/lang/String;)LResponseEntity;
+false
+471b2a69d0cd1349e90015aec3c693e4
+java.util.Optional#get()Ljava/lang/Object;
+java.util.Optional#isPresent()Z
+==
+!unknownMethod! !unknownMethod!
+findUserByEmail com.example.demo.service.UserService#findUserByEmail(Ljava/lang/String;)Ljava/util/Optional;
+saveUser com.example.demo.service.UserService#saveUser(Lcom/example/demo/entity/User;)V
+setVerified com.example.demo.entity.User#setVerified(Z)V

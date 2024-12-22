@@ -1,0 +1,8 @@
+com.example.demo.controller.UserController#deleteUser(Ljava/lang/Long;)LResponseEntity;
+false
+fc4d6f2e54ef2b0f064be85df76e219c
+java.util.Optional#isPresent()Z
+==
+!unknownMethod! !unknownMethod!
+deleteUserById com.example.demo.service.UserService#deleteUserById(Ljava/lang/Long;)V
+findUserById com.example.demo.service.UserService#findUserById(Ljava/lang/Long;)Ljava/util/Optional;

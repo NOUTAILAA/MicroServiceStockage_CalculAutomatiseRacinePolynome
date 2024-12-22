@@ -1,0 +1,10 @@
+com.example.demo.controller.AdminController#generateToken(Lcom/example/demo/entity/Admin;LAuthentication;)Ljava/lang/String;
+false
+402629ccda35a606828631e3d4e515dc
+java.time.Instant#now()Ljava/time/Instant;
+java.time.Instant#plus(JLjava/time/temporal/TemporalUnit;)Ljava/time/Instant;
+java.util.stream.Collectors#toList()Ljava/util/stream/Collector;
+==
+!unknownMethod! !unknownMethod!
+getEmail com.example.demo.entity.User#getEmail()Ljava/lang/String;
+getId com.example.demo.entity.User#getId()Ljava/lang/Long;

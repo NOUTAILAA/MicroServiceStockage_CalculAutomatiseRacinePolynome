@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +66,23 @@ public class UserService {
         return userRepository.findById(id);
     }
    
+    public List<Calculator> findAllCalculators() {
+        return calculatorRepository.findAll();
+    }
+
+    public void deleteCalculatorById(Long id) {
+        calculatorRepository.deleteById(id);
+    }
 
     public Optional<Admin> findAdminByEmail(String email) {
         return adminRepository.findByEmail(email);
 }
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
+    }
+    public void deleteAdminById(Long id) {
+        adminRepository.deleteById(id);
+    }
+
+
 }

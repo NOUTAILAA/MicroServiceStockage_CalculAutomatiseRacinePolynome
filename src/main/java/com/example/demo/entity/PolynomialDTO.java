@@ -12,7 +12,6 @@ public class PolynomialDTO {
         this.roots = polynomial.getRoots() != null ? polynomial.getRoots().toString() : "[]"; // Transformer roots en chaîne
     }
 
-    // Getters uniquement
     public Long getId() {
         return id;
     }

@@ -1,0 +1,7 @@
+com.example.demo.controller.AdminController#getAdminById(Ljava/lang/Long;)LResponseEntity;
+false
+54e6342630ae921e5469d5eb16ee1052
+java.util.Optional#map(Ljava/util/function/Function;)Ljava/util/Optional;
+==
+!unknownMethod! !unknownMethod!
+findAdminById com.example.demo.service.UserService#findAdminById(Ljava/lang/Long;)Ljava/util/Optional;

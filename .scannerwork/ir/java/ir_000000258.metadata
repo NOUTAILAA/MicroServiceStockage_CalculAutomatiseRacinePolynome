@@ -1,0 +1,5 @@
+com.example.demo.service.EmailService#sendLoginNotification(Ljava/lang/String;Ljava/lang/String;)V
+false
+e36f76fd6aa1ddb587abedc5cc563c72
+==
+sendEmail com.example.demo.service.EmailService#sendEmail(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V

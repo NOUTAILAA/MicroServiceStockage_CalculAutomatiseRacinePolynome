@@ -1,0 +1,13 @@
+com.example.demo.controller.UserController#loginUser(Lcom/example/demo/entity/User;)LResponseEntity;
+false
+741e8712ead6ffa049c7e4d26704477a
+com.example.demo.controller.UserController#authenticateAndGenerateToken(Ljava/lang/String;Ljava/lang/String;Lcom/example/demo/entity/User;)LResponseEntity;
+java.util.Map#of(Ljava/lang/Object;Ljava/lang/Object;)Ljava/util/Map;
+java.util.Optional#get()Ljava/lang/Object;
+java.util.Optional#isPresent()Z
+==
+!unknownMethod! !unknownMethod!
+findUserByEmail com.example.demo.service.UserService#findUserByEmail(Ljava/lang/String;)Ljava/util/Optional;
+getEmail com.example.demo.entity.User#getEmail()Ljava/lang/String;
+getPassword com.example.demo.entity.User#getPassword()Ljava/lang/String;
+isVerified com.example.demo.entity.User#isVerified()Z

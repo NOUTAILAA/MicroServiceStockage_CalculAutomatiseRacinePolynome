@@ -1,0 +1,7 @@
+organization=noutailaa
+projectKey=polynome
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.58741
+dashboardUrl=https://sonarcloud.io/dashboard?id=polynome
+ceTaskId=AZPu-_0WtVs9uHzNe-Lk
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZPu-_0WtVs9uHzNe-Lk

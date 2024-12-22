@@ -27,11 +27,15 @@ import com.example.demo.service.EmailService;
 import com.example.demo.service.UserService;
 
 import jakarta.mail.MessagingException;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("/api/calculators")
 public class CalculatorController {
+	private static final Logger logger = LoggerFactory.getLogger(CalculatorController.class);
 
+    // Constante pour éviter la duplication du littéral "message"
+    private static final String MESSAGE_KEY = "message";
     @Autowired
     private UserService userService; // Utilise UserService pour interagir avec la base
     @Autowired
@@ -49,39 +53,38 @@ public class CalculatorController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> loginCalculator(@RequestBody Calculator loginRequest) {
-        System.out.println("Tentative de connexion pour : " + loginRequest.getEmail());
+        logger.info("Tentative de connexion pour : {}", loginRequest.getEmail());
 
         Optional<Calculator> calculator = userService.findCalculatorByEmail(loginRequest.getEmail());
 
         if (calculator.isPresent()) {
-            System.out.println("Utilisateur trouvé : " + calculator.get().getEmail());
-            System.out.println("Mot de passe stocké (encodé) : " + calculator.get().getPassword());
+            logger.info("Utilisateur trouvé : {}", calculator.get().getEmail());
+            logger.info("Mot de passe stocké (encodé) : {}", calculator.get().getPassword());
 
             if (!calculator.get().isVerified()) {
-                System.out.println("Utilisateur non vérifié !");
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", "Veuillez vérifier votre e-mail."));
+                logger.warn("Utilisateur non vérifié !");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(MESSAGE_KEY, "Veuillez vérifier votre e-mail."));
             }
 
             boolean passwordMatches = passwordEncoder.matches(loginRequest.getPassword(), calculator.get().getPassword());
-            System.out.println("Mot de passe correspond : " + passwordMatches);
+            logger.info("Mot de passe correspond : {}", passwordMatches);
 
             if (!passwordMatches) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Mot de passe incorrect."));
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(MESSAGE_KEY, "Mot de passe incorrect."));
             }
 
-            // Authentification
             try {
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
                 );
-                System.out.println("Authentification réussie pour : " + loginRequest.getEmail());
+                logger.info("Authentification réussie pour : {}", loginRequest.getEmail());
 
                 Instant instant = Instant.now();
 
                 List<String> roles = authentication.getAuthorities().stream()
                         .map(authority -> authority.getAuthority().replace("ROLE_", ""))
                         .collect(Collectors.toList());
-                System.out.println("Rôles de l'utilisateur : " + roles);
+                logger.info("Rôles de l'utilisateur : {}", roles);
 
                 Long userId = calculator.get().getId();
 
@@ -99,29 +102,35 @@ public class CalculatorController {
                 );
 
                 String jwt = jwtEncoder.encode(jwtEncoderParameters).getTokenValue();
-                System.out.println("JWT généré avec succès : " + jwt);
+                logger.info("JWT généré avec succès : {}", jwt);
 
-                // Envoi de notification par email
-                try {
-                    emailService.sendLoginNotification(calculator.get().getEmail(), calculator.get().getUsername());
-                    System.out.println("Notification par email envoyée à : " + calculator.get().getEmail());
-                } catch (MessagingException e) {
-                    System.err.println("Erreur lors de l'envoi de la notification par e-mail : " + e.getMessage());
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Erreur lors de l'envoi de la notification par e-mail."));
+                // Envoi de notification par méthode séparée
+                ResponseEntity<Map<String, String>> notificationResponse = sendLoginNotification(calculator.get());
+                if (notificationResponse != null) {
+                    return notificationResponse;
                 }
 
                 return ResponseEntity.ok(Map.of("token", jwt, "userId", String.valueOf(userId)));
             } catch (Exception e) {
-                System.err.println("Erreur lors de l'authentification : " + e.getMessage());
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Erreur lors de l'authentification."));
+                logger.error("Erreur lors de l'authentification : {}", e.getMessage());
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(MESSAGE_KEY, "Erreur lors de l'authentification."));
             }
         } else {
-            System.out.println("Utilisateur introuvable pour l'email : " + loginRequest.getEmail());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Nom d'utilisateur ou mot de passe incorrect."));
+            logger.warn("Utilisateur introuvable pour l'email : {}", loginRequest.getEmail());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(MESSAGE_KEY, "Nom d'utilisateur ou mot de passe incorrect."));
         }
     }
 
-
+    private ResponseEntity<Map<String, String>> sendLoginNotification(Calculator calculator) {
+        try {
+            emailService.sendLoginNotification(calculator.getEmail(), calculator.getUsername());
+            logger.info("Notification par email envoyée à : {}", calculator.getEmail());
+        } catch (MessagingException e) {
+            logger.error("Erreur lors de l'envoi de la notification par e-mail : {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(MESSAGE_KEY, "Erreur lors de l'envoi de la notification par e-mail."));
+        }
+        return null;
+    }
 
 
     @PostMapping("/register")
@@ -140,10 +149,10 @@ public class CalculatorController {
 
         userService.saveCalculator(calculator);
 
-        // Envoi d'un email de vérification
         try {
             emailService.sendVerificationEmail(calculator.getEmail(), calculator.getUsername());
         } catch (MessagingException e) {
+            logger.error("Erreur lors de l'envoi de l'email de vérification : {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'envoi de l'email de vérification.");
         }
 
@@ -159,7 +168,7 @@ public class CalculatorController {
             userService.saveCalculator(calculator.get());
             return ResponseEntity.ok("E-mail vérifié avec succès.");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Calculator non trouvé.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Calculator non trrouvé.");
     }
 
     @GetMapping("/{id}")
@@ -173,7 +182,7 @@ public class CalculatorController {
         Calculator calculator = userService.findCalculatorByEmail(email).orElse(null);
 
         if (calculator == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Calculator non trouvé.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Calculattor non trouvé.");
         }
 
         String newPassword = generateRandomPassword();
@@ -203,4 +212,34 @@ public class CalculatorController {
         }
         return password.toString();
     }
+    @GetMapping
+    public ResponseEntity<List<Calculator>> getAllCalculators() {
+        List<Calculator> calculators = userService.findAllCalculators();
+        return ResponseEntity.ok(calculators);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateCalculator(@PathVariable Long id, @RequestBody Calculator updatedCalculator) {
+        Optional<Calculator> existingCalculator = userService.findCalculatorById(id);
+        if (existingCalculator.isPresent()) {
+            Calculator calculator = existingCalculator.get();
+            calculator.setUsername(updatedCalculator.getUsername());
+            calculator.setEmail(updatedCalculator.getEmail());
+            calculator.setTelephone(updatedCalculator.getTelephone());
+            userService.saveCalculator(calculator);
+            return ResponseEntity.ok("Calculator mis à jour avec succès.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Callculator non trouvé.");
+        }
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteCalculator(@PathVariable Long id) {
+        Optional<Calculator> calculator = userService.findCalculatorById(id);
+        if (calculator.isPresent()) {
+            userService.deleteCalculatorById(id);
+            return ResponseEntity.ok("Calculator supprimé avec succès.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Calculator non trouvé.");
+        }
+    }
+
 }

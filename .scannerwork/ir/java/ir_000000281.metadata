@@ -1,0 +1,8 @@
+com.example.demo.controller.AdminController#deleteAdmin(Ljava/lang/Long;)LResponseEntity;
+false
+20ec164364b394cbf891b3e0a6afbafe
+java.util.Optional#isPresent()Z
+==
+!unknownMethod! !unknownMethod!
+deleteAdminById com.example.demo.service.UserService#deleteAdminById(Ljava/lang/Long;)V
+findAdminById com.example.demo.service.UserService#findAdminById(Ljava/lang/Long;)Ljava/util/Optional;

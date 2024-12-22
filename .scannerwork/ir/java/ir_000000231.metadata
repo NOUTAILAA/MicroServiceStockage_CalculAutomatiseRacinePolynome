@@ -1,0 +1,5 @@
+com.example.demo.service.UserService#findCalculatorByEmail(Ljava/lang/String;)Ljava/util/Optional;
+false
+d907d9413b58a6990ed2023d85ad4669
+==
+findByEmail com.example.demo.repository.CalculatorRepository#findByEmail(Ljava/lang/String;)Ljava/util/Optional;

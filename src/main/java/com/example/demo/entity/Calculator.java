@@ -18,5 +18,8 @@ public class Calculator extends User {
     public void setDepartment(String department) {
         this.department = department;
     }
-    public Calculator() {}
+    public Calculator() {
+        // C'est un constructeur par default
+
+    }
 }

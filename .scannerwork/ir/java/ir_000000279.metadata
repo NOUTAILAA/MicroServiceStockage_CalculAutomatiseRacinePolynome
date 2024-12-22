@@ -1,0 +1,10 @@
+com.example.demo.controller.AdminController#verifyEmail(Ljava/lang/String;)LResponseEntity;
+false
+5eb7db35005d9f029cc3f1779dd84813
+java.util.Optional#get()Ljava/lang/Object;
+java.util.Optional#isPresent()Z
+==
+!unknownMethod! !unknownMethod!
+findAdminByEmail com.example.demo.service.UserService#findAdminByEmail(Ljava/lang/String;)Ljava/util/Optional;
+saveAdmin com.example.demo.service.UserService#saveAdmin(Lcom/example/demo/entity/Admin;)V
+setVerified com.example.demo.entity.User#setVerified(Z)V

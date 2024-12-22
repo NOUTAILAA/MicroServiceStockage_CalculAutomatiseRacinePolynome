@@ -1,0 +1,7 @@
+com.example.demo.controller.UserController#getUserById(Ljava/lang/Long;)LResponseEntity;
+false
+6f505396c603d30dadbe8b15ec003d52
+java.util.Optional#map(Ljava/util/function/Function;)Ljava/util/Optional;
+==
+!unknownMethod! !unknownMethod!
+findUserById com.example.demo.service.UserService#findUserById(Ljava/lang/Long;)Ljava/util/Optional;

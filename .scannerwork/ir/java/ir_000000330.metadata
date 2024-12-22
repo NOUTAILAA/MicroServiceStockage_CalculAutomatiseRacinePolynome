@@ -1,0 +1,9 @@
+com.example.demo.controller.UserController#registerCalculator(Lcom/example/demo/entity/Calculator;)LResponseEntity;
+false
+9c9ab0c63eefcdcd50db8c607750ea98
+java.util.Optional#isPresent()Z
+==
+!unknownMethod! !unknownMethod!
+findUserByUsername com.example.demo.service.UserService#findUserByUsername(Ljava/lang/String;)Ljava/util/Optional;
+getUsername com.example.demo.entity.User#getUsername()Ljava/lang/String;
+saveCalculator com.example.demo.service.UserService#saveCalculator(Lcom/example/demo/entity/Calculator;)V

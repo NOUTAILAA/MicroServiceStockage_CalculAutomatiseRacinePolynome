@@ -1,0 +1,14 @@
+com.example.demo.security.CustomUserDetailsService#loadUserByUsername(Ljava/lang/String;)LUserDetails;
+false
+0ef25c17359ec307ef136f4922547363
+java.lang.String#split(Ljava/lang/String;)[Ljava/lang/String;
+java.util.Arrays#stream([Ljava/lang/Object;)Ljava/util/stream/Stream;
+java.util.Optional#orElseThrow(Ljava/util/function/Supplier;)Ljava/lang/Object;
+java.util.stream.Collectors#toList()Ljava/util/stream/Collector;
+==
+!unknownMethod! !unknownMethod!
+findByEmail com.example.demo.repository.UserRepository#findByEmail(Ljava/lang/String;)Ljava/util/Optional;
+getEmail com.example.demo.entity.User#getEmail()Ljava/lang/String;
+getPassword com.example.demo.entity.User#getPassword()Ljava/lang/String;
+getRole com.example.demo.entity.User#getRole()Ljava/lang/String;
+map java.util.stream.Stream#map(Ljava/util/function/Function;)Ljava/util/stream/Stream;

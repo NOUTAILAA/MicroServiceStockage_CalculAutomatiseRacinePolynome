@@ -1,0 +1,13 @@
+com.example.demo.controller.PolynomialController#getPolynomialsByUserId(Ljava/lang/Long;)LResponseEntity;
+false
+c2a901e1e01edd73d1f4a9dc6eaa1b29
+java.util.Optional#isEmpty()Z
+java.util.stream.Collectors#toList()Ljava/util/stream/Collector;
+==
+!unknownMethod! !unknownMethod!
+collect java.util.stream.Stream#collect(Ljava/util/stream/Collector;)Ljava/lang/Object;
+findById com.example.demo.service.UserService#findById(Ljava/lang/Long;)Ljava/util/Optional;
+getPolynomialsByUserId com.example.demo.service.PolynomialService#getPolynomialsByUserId(Ljava/lang/Long;)Ljava/util/List;
+isEmpty java.util.List#isEmpty()Z
+map java.util.stream.Stream#map(Ljava/util/function/Function;)Ljava/util/stream/Stream;
+stream java.util.Collection#stream()Ljava/util/stream/Stream;

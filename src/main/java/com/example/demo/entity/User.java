@@ -19,10 +19,7 @@ public class User {
     private boolean verified = false;
 
     private String role;
-    /*public enum UserRole {
-        USER,
-        ADMIN
-    }*/
+ 
 
     public String getRole() {
         return role;
@@ -32,7 +29,10 @@ public class User {
         this.role = role;
     }
 
-public User() {}
+public User() {
+    // c 'est un constructeur par default
+
+}
 
 
 

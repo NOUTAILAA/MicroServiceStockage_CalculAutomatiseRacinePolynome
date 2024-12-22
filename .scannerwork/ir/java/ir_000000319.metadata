@@ -1,0 +1,12 @@
+com.example.demo.service.PolynomialService#savePolynomial(Lcom/example/demo/entity/Polynomial;)V
+false
+0f211a4cb7d637b2463ef9d997fc8f0d
+com.example.demo.service.PolynomialService#findDuplicatePolynomial(Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Long;)Ljava/util/Optional;
+java.util.Optional#isEmpty()Z
+==
+!unknownMethod! !unknownMethod!
+getFactoredExpression com.example.demo.entity.Polynomial#getFactoredExpression()Ljava/lang/String;
+getId com.example.demo.entity.User#getId()Ljava/lang/Long;
+getRoots com.example.demo.entity.Polynomial#getRoots()Ljava/util/List;
+getSimplifiedExpression com.example.demo.entity.Polynomial#getSimplifiedExpression()Ljava/lang/String;
+getUser com.example.demo.entity.Polynomial#getUser()Lcom/example/demo/entity/User;

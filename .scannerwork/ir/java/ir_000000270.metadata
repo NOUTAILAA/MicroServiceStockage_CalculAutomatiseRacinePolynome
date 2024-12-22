@@ -1,0 +1,8 @@
+com.example.demo.controller.CalculatorController#deleteCalculator(Ljava/lang/Long;)LResponseEntity;
+false
+a716214c86c2e4930cb212b7f6abbd14
+java.util.Optional#isPresent()Z
+==
+!unknownMethod! !unknownMethod!
+deleteCalculatorById com.example.demo.service.UserService#deleteCalculatorById(Ljava/lang/Long;)V
+findCalculatorById com.example.demo.service.UserService#findCalculatorById(Ljava/lang/Long;)Ljava/util/Optional;

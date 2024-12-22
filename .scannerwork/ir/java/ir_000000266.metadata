@@ -1,0 +1,7 @@
+com.example.demo.controller.CalculatorController#getCalculatorById(Ljava/lang/Long;)LResponseEntity;
+false
+bc992934d18d9886a419f57933aa4e08
+java.util.Optional#map(Ljava/util/function/Function;)Ljava/util/Optional;
+==
+!unknownMethod! !unknownMethod!
+findCalculatorById com.example.demo.service.UserService#findCalculatorById(Ljava/lang/Long;)Ljava/util/Optional;

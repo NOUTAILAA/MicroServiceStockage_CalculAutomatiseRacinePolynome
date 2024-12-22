@@ -1,0 +1,14 @@
+com.example.demo.controller.AdminController#registerAdmin(Lcom/example/demo/entity/Admin;)LResponseEntity;
+false
+fe5757a82d755e406f574139485dbc9f
+com.example.demo.controller.AdminController#sendVerificationEmail(Lcom/example/demo/entity/Admin;)Z
+java.util.Optional#isPresent()Z
+==
+!unknownMethod! !unknownMethod!
+findUserByUsername com.example.demo.service.UserService#findUserByUsername(Ljava/lang/String;)Ljava/util/Optional;
+getPassword com.example.demo.entity.User#getPassword()Ljava/lang/String;
+getUsername com.example.demo.entity.User#getUsername()Ljava/lang/String;
+saveAdmin com.example.demo.service.UserService#saveAdmin(Lcom/example/demo/entity/Admin;)V
+setPassword com.example.demo.entity.User#setPassword(Ljava/lang/String;)V
+setRole com.example.demo.entity.User#setRole(Ljava/lang/String;)V
+setVerified com.example.demo.entity.User#setVerified(Z)V

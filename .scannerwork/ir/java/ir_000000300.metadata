@@ -1,0 +1,8 @@
+com.example.demo.controller.PolynomialController#getPolynomialById(Ljava/lang/Long;)LResponseEntity;
+false
+363fb4f51d4601fb0d707e2de60f2056
+java.util.Optional#get()Ljava/lang/Object;
+java.util.Optional#isPresent()Z
+==
+!unknownMethod! !unknownMethod!
+getPolynomialById com.example.demo.service.PolynomialService#getPolynomialById(Ljava/lang/Long;)Ljava/util/Optional;

@@ -1,0 +1,5 @@
+com.example.demo.service.UserService#findAdminByEmail(Ljava/lang/String;)Ljava/util/Optional;
+false
+73aa7f6e44e4643fde4f832519f70fc3
+==
+findByEmail com.example.demo.repository.AdminRepository#findByEmail(Ljava/lang/String;)Ljava/util/Optional;

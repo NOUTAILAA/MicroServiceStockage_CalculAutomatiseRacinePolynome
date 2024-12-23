@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -29,13 +30,14 @@ class PolynomialServiceTest {
     private PolynomialService polynomialService;
 
     private Polynomial polynomial;
+    private User user;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         
         // Créer un utilisateur fictif
-        User user = new User();
+        user = new User();
         user.setId(1L);
         user.setUsername("testUser");
 
@@ -46,22 +48,45 @@ class PolynomialServiceTest {
         polynomial.setUser(user);  // Lien avec l'utilisateur
     }
 
-
+    // --- Test sans doublon (Enregistrement réussi) ---
     @Test
     void testSavePolynomial_NoDuplicate() {
         when(polynomialRepository.findDuplicate(anyString(), anyString(), any(), anyLong()))
                 .thenReturn(Optional.empty());
 
         polynomialService.savePolynomial(polynomial);
+
+        // Vérifier que la méthode save() est appelée
         verify(polynomialRepository, times(1)).save(polynomial);
     }
 
-    @Test
-    void testSavePolynomial_Duplicate() {
-        when(polynomialRepository.findDuplicate(anyString(), anyString(), any(), anyLong()))
-                .thenReturn(Optional.of(polynomial));
+    // --- Test avec doublon (Pas d'enregistrement attendu) ---
 
+
+    // --- Ajout de vérification pour confirmer la logique ---
+    @Test
+    void testSavePolynomial_Duplicate_WithLogging() {
+        // Simuler la présence d'un doublon
+        when(polynomialRepository.findDuplicate(
+            polynomial.getSimplifiedExpression(),
+            polynomial.getFactoredExpression(),
+            polynomial.getRoots(),
+            polynomial.getUser().getId()
+        )).thenReturn(Optional.of(polynomial));
+
+        // Appeler la méthode savePolynomial
         polynomialService.savePolynomial(polynomial);
+
+        // Vérification avec un message explicatif
         verify(polynomialRepository, never()).save(polynomial);
+
+        // Assertion supplémentaire pour débogage
+        Optional<Polynomial> duplicate = polynomialRepository.findDuplicate(
+            polynomial.getSimplifiedExpression(),
+            polynomial.getFactoredExpression(),
+            polynomial.getRoots(),
+            polynomial.getUser().getId()
+        );
+        assert duplicate.isPresent();
     }
 }

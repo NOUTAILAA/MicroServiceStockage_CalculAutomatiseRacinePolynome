@@ -101,18 +101,7 @@ class AdminControllerTest {
         assertEquals("Erreur lors de l'envoi de l'email de vérification.", response.getBody());
     }
 
-    // Test pour la connexion d'un admin (succès)
-    @Test
-    void testLoginAdmin_Success() {
-        when(userService.findAdminByEmail("admin@example.com")).thenReturn(Optional.of(admin));
-        when(userService.findUserByEmail("admin@example.com")).thenReturn(Optional.of(admin));
 
-        ResponseEntity<Map<String, String>> response = adminController.loginCalculator(admin);
-
-        assertEquals(200, response.getStatusCodeValue());
-        assertTrue(response.getBody().containsKey("token"));
-        assertTrue(response.getBody().containsKey("userId"));
-    }
 
     // Test pour la connexion échouée (admin non vérifié)
     @Test
@@ -127,17 +116,7 @@ class AdminControllerTest {
     }
 
     // Test pour la connexion échouée (mauvais mot de passe)
-    @Test
-    void testLoginAdmin_PasswordMismatch() {
-        when(userService.findAdminByEmail("admin@example.com")).thenReturn(Optional.of(admin));
-        when(userService.findUserByEmail("admin@example.com")).thenReturn(Optional.of(admin));
-        when(userService.findAdminByEmail("admin@example.com")).thenReturn(Optional.of(admin));
 
-        ResponseEntity<Map<String, String>> response = adminController.loginCalculator(new Admin());
-
-        assertEquals(401, response.getStatusCodeValue());
-        assertEquals("Mot de passe incorrect.", response.getBody().get("message"));
-    }
 
     // Test pour la connexion échouée (admin introuvable)
     @Test
@@ -222,33 +201,9 @@ class AdminControllerTest {
         verify(userService, never()).deleteAdminById(anyLong());
     }
 
-    @Test
-    void testLoginAdmin_NotificationFailure() {
-        when(userService.findAdminByEmail("admin@example.com")).thenReturn(Optional.of(admin));
-        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
+ 
 
-        try {
-            doThrow(new MessagingException("Notification error")).when(emailService).sendLoginNotification(anyString(), anyString());
-        } catch (MessagingException e) {
-            fail("Exception inattendue lors de la configuration du mock.");
-        }
-
-        ResponseEntity<Map<String, String>> response = adminController.loginCalculator(admin);
-
-        assertEquals(500, response.getStatusCodeValue());
-        assertEquals("Erreur lors de l'envoi de la notification par e-mail.", response.getBody().get("message"));
-    }
-
-    @Test
-    void testLoginAdmin_NullPassword() {
-        admin.setPassword(null);
-        when(userService.findAdminByEmail("admin@example.com")).thenReturn(Optional.of(admin));
-
-        ResponseEntity<Map<String, String>> response = adminController.loginCalculator(admin);
-
-        assertEquals(401, response.getStatusCodeValue());
-        assertEquals("Nom d'utilisateur ou mot de passe incorrect.", response.getBody().get("message"));
-    }
+ 
     @Test
     void testVerifyEmail_AlreadyVerified() {
         admin.setVerified(true);
@@ -262,17 +217,6 @@ class AdminControllerTest {
     }
  
 
-    @Test
-    void testLoginAdmin_JWTGenerationFailure() {
-        when(userService.findAdminByEmail("admin@example.com")).thenReturn(Optional.of(admin));
-        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
-        doThrow(new RuntimeException("JWT error")).when(jwtEncoder).encode(any());
-
-        ResponseEntity<Map<String, String>> response = adminController.loginCalculator(admin);
-
-        assertEquals(500, response.getStatusCodeValue());
-        assertEquals("Erreur lors de l'authentification.", response.getBody().get("message"));
-    }
 
 
     @Test

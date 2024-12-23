@@ -1,6 +1,6 @@
 com.example.demo.controller.AdminController#registerAdmin(Lcom/example/demo/entity/Admin;)LResponseEntity;
 false
-fe5757a82d755e406f574139485dbc9f
+359613e1967a2cf31564c5568e6eafd1
 com.example.demo.controller.AdminController#sendVerificationEmail(Lcom/example/demo/entity/Admin;)Z
 java.util.Optional#isPresent()Z
 ==

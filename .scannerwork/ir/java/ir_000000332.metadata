@@ -1,6 +1,6 @@
 com.example.demo.controller.UserController#loginUser(Lcom/example/demo/entity/User;)LResponseEntity;
 false
-741e8712ead6ffa049c7e4d26704477a
+91503bd06da3446744d461398dcf308a
 com.example.demo.controller.UserController#authenticateAndGenerateToken(Ljava/lang/String;Ljava/lang/String;Lcom/example/demo/entity/User;)LResponseEntity;
 java.util.Map#of(Ljava/lang/Object;Ljava/lang/Object;)Ljava/util/Map;
 java.util.Optional#get()Ljava/lang/Object;

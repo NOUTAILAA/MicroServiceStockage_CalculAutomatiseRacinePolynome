@@ -1,6 +1,6 @@
 com.example.demo.controller.UserController#registerCalculator(Lcom/example/demo/entity/Calculator;)LResponseEntity;
 false
-9c9ab0c63eefcdcd50db8c607750ea98
+0a321815eb3ae4632e198481a5dc1fbf
 java.util.Optional#isPresent()Z
 ==
 !unknownMethod! !unknownMethod!

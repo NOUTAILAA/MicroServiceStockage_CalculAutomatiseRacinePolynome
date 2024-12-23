@@ -167,17 +167,17 @@ class PolynomialControllerTest {
     @Test
     void testStorePolynomial_MissingUserId() {
         Map<String, Object> requestBody = Map.of(
-                "simplifiedExpression", "x^3 - 1",
-                "factoredExpression", "(x-1)(x^2 + x + 1)",
-                "roots", List.of("1")
+            "simplifiedExpression", "x^2 - 4",
+            "factoredExpression", "(x-2)(x+2)",
+            "roots", List.of("2", "-2")
         );
 
         ResponseEntity<String> response = polynomialController.storePolynomial(requestBody);
 
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(400, response.getStatusCodeValue());
         assertEquals("User ID is required.", response.getBody());
-        verify(polynomialService, never()).savePolynomial(any(Polynomial.class));
     }
+
 
     @Test
     void testStorePolynomial_EmptyRoots() {

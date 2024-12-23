@@ -226,19 +226,61 @@ class UserControllerTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals("Admin enregistré avec succès.", response.getBody());
     }
+
+
+
+
+
     @Test
     void testRegisterCalculator_Success() {
-        Calculator calculator = new Calculator();
-        calculator.setUsername("calcUser");
-        calculator.setPassword("calcPass");
-
         when(userService.findUserByUsername("calcUser")).thenReturn(Optional.empty());
+        when(userService.findUserByEmail("calc@example.com")).thenReturn(Optional.empty());
 
-        ResponseEntity<String> response = userController.registerCalculator(calculator);
+        ResponseEntity<String> response = userController.registerUser(Map.of(
+            "username", "calcUser",
+            "email", "calc@example.com",
+            "password", "pass1234",
+            "isCalculator", true,
+            "telephone", "0606060606"
+        ));
 
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals("Calculator enregistré avec succès.", response.getBody());
+        assertEquals(201, response.getStatusCodeValue());
+        assertEquals("Calculator enregistré avec succès. Veuillez vérifier votre e-mail.", response.getBody());
     }
+
+    @Test
+    void testRegisterCalculator_EmailException() throws MessagingException {
+        when(userService.findUserByUsername("calcUser")).thenReturn(Optional.empty());
+        when(userService.findUserByEmail("calc@example.com")).thenReturn(Optional.empty());
+        doThrow(new MessagingException("Erreur d'envoi")).when(emailService).sendVerificationEmail(anyString(), anyString());
+
+        ResponseEntity<String> response = userController.registerUser(Map.of(
+            "username", "calcUser",
+            "email", "calc@example.com",
+            "password", "pass1234",
+            "isCalculator", true
+        ));
+
+        assertEquals(500, response.getStatusCodeValue());
+        assertEquals("Erreur lors de l'envoi de l'email de vérification.", response.getBody());
+    }
+
+    @Test
+    void testRegisterUser_ValidEmailFormat() {
+        when(userService.findUserByUsername("JohnDoe")).thenReturn(Optional.empty());
+        when(userService.findUserByEmail("user@example.com")).thenReturn(Optional.empty());
+
+        ResponseEntity<String> response = userController.registerUser(Map.of(
+            "username", "JohnDoe",
+            "email", "user@example.com",
+            "password", "1234"
+        ));
+
+        assertEquals(201, response.getStatusCodeValue());
+        assertEquals("Utilisateur enregistré avec succès. Veuillez vérifier votre e-mail.", response.getBody());
+    }
+
+
     
 
 }

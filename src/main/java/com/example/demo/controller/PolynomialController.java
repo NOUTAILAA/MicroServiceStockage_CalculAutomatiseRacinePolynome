@@ -34,30 +34,29 @@ public class PolynomialController {
     @PostMapping("/store-polynomial")
     public ResponseEntity<String> storePolynomial(@RequestBody Map<String, Object> requestBody) {
         try {
-            // Extraire les données de la requête
             String simplifiedExpression = (String) requestBody.get("simplifiedExpression");
             String factoredExpression = (String) requestBody.get("factoredExpression");
             List<String> roots = (List<String>) requestBody.get("roots");
-            Long userId = Long.valueOf(requestBody.get("userId").toString());
+            
+            Object userIdObject = requestBody.get("userId");
 
-            if (userId == null) {
+            if (userIdObject == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID is required.");
             }
 
-            // Récupérer l'utilisateur associé au userId
+            Long userId = Long.valueOf(userIdObject.toString());
+
             Optional<User> userOptional = userService.findById(userId);
             if (userOptional.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
             }
 
-            // Créer une nouvelle instance de Polynomial
             Polynomial polynomial = new Polynomial();
             polynomial.setSimplifiedExpression(simplifiedExpression);
             polynomial.setFactoredExpression(factoredExpression);
             polynomial.setRoots(roots);
-            polynomial.setUser(userOptional.get()); // Associer l'utilisateur
+            polynomial.setUser(userOptional.get());
 
-            // Enregistrer le polynôme
             polynomialService.savePolynomial(polynomial);
 
             return ResponseEntity.ok("Polynomial stored successfully.");
@@ -65,6 +64,7 @@ public class PolynomialController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
+
 
 
 

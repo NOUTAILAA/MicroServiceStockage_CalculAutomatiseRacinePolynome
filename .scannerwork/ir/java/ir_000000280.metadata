@@ -1,6 +1,6 @@
 com.example.demo.controller.AdminController#generateToken(Lcom/example/demo/entity/Admin;LAuthentication;)Ljava/lang/String;
 false
-402629ccda35a606828631e3d4e515dc
+bae1e61f2af0a4654aad0ecc9f914cc9
 java.time.Instant#now()Ljava/time/Instant;
 java.time.Instant#plus(JLjava/time/temporal/TemporalUnit;)Ljava/time/Instant;
 java.util.stream.Collectors#toList()Ljava/util/stream/Collector;

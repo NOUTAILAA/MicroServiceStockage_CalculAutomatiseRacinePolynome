@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +20,8 @@ public class Polynomial {
     
     private String simplifiedExpression;
     private String factoredExpression;
+    @Column(name = "roots", length = 10000)  // Longueur maximale définie
+
     private List<String> roots;
     @ManyToOne(fetch = FetchType.LAZY) // Relation avec l'entité User
     @JoinColumn(name = "user_id") // Nom de la colonne de clé étrangère

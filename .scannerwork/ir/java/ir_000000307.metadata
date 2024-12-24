@@ -1,6 +1,6 @@
 com.example.demo.security.SecurityConfig#corsConfigurationSource()LCorsConfigurationSource;
 false
-49c0b251a4b990089f6d254c28c28409
+d2b6400d521c4fc3b61f63a9f3baec81
 java.util.Arrays#asList([Ljava/lang/Object;)Ljava/util/List;
 ==
 !unknownMethod! !unknownMethod!

@@ -1,6 +1,6 @@
 com.example.demo.controller.UserController#updateUserProfile(Ljava/lang/Long;Ljava/util/Map;)LResponseEntity;
 false
-0a6eabf417d13b7bbb0e820cfbd4aa9f
+b4b520fd78d031b5082a8ecf926ef1d0
 java.lang.String#equals(Ljava/lang/Object;)Z
 java.util.Optional#get()Ljava/lang/Object;
 java.util.Optional#isPresent()Z

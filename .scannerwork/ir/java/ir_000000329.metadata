@@ -1,6 +1,6 @@
 com.example.demo.controller.UserController#registerAdmin(Lcom/example/demo/entity/Admin;)LResponseEntity;
 false
-c32865c6f77eb407a789c56aa565d192
+50d5a15adcf0b9a47fca8f163a4c206e
 java.util.Optional#isPresent()Z
 ==
 !unknownMethod! !unknownMethod!

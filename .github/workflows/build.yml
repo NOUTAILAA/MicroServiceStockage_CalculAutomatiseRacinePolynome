@@ -18,8 +18,6 @@ jobs:
         env:
           MYSQL_DATABASE: polynome
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_USER: test
-          MYSQL_PASSWORD: test
         ports:
           - 3306:3306
         options: >-
@@ -37,6 +35,17 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
+
+      - name: Wait for MySQL to be ready
+        run: |
+          for i in {1..30}; do
+            if mysqladmin ping -h "127.0.0.1" --silent; then
+              echo "MySQL is ready"
+              break
+            fi
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
 
       - name: Cache Maven Packages
         uses: actions/cache@v3
@@ -67,3 +76,6 @@ jobs:
           name: jacoco-report
           path: target/site/jacoco
 
+      - name: Show MySQL logs (debug)
+        if: failure()
+        run: docker logs $(docker ps -q --filter "ancestor=mysql:8.0")

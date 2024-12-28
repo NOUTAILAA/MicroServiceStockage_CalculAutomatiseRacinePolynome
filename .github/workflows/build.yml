@@ -1,4 +1,4 @@
-name: Build and Test Spring Boot Application
+name: Build and Deploy Microservices
 
 on:
   push:
@@ -15,16 +15,20 @@ jobs:
     services:
       mysql:
         image: mysql:8.0
+        container_name: mysqldb
         env:
-          MYSQL_DATABASE: polynome
           MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: polynome
         ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
+          - "3307:3306"
+        networks:
+          - app-network
+        healthcheck:
+          test: [ "CMD-SHELL", "mysqladmin ping -h localhost -uroot -proot || exit 1" ]
+          interval: 10s
+          retries: 10
+          start_period: 30s
+          timeout: 5s
 
     steps:
       - name: Checkout Code
@@ -36,10 +40,18 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
+      - name: Set Environment Variables
+        run: |
+          echo "MYSQL_HOST=mysqldb" >> $GITHUB_ENV
+          echo "MYSQL_PORT=3306" >> $GITHUB_ENV
+
+      - name: Start Docker Compose Services
+        run: docker-compose -f docker-compose.yml up -d
+
       - name: Wait for MySQL to be ready
         run: |
           for i in {1..30}; do
-            if mysqladmin ping -h "127.0.0.1" --silent; then
+            if docker exec mysqldb mysqladmin ping -h "localhost" --silent; then
               echo "MySQL is ready"
               break
             fi
@@ -55,8 +67,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Build Spring Boot Application
+        run: mvn clean install -DskipTests
 
       - name: Run Tests
         run: mvn test
@@ -69,6 +81,9 @@ jobs:
           -Dsonar.organization=noutailaa \
           -Dsonar.host.url=https://sonarcloud.io
 
+      - name: Deploy Microservices (Docker Compose)
+        run: docker-compose up -d
+
       - name: Upload Test Coverage Report
         if: success()
         uses: actions/upload-artifact@v3
@@ -78,4 +93,4 @@ jobs:
 
       - name: Show MySQL logs (debug)
         if: failure()
-        run: docker logs $(docker ps -q --filter "ancestor=mysql:8.0")
+        run: docker logs mysqldb

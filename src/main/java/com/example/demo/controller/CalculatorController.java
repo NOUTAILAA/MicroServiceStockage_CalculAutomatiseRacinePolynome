@@ -146,6 +146,7 @@ public class CalculatorController {
         String pwd = passwordEncoder.encode(calculator.getPassword());
         calculator.setPassword(pwd);
         calculator.setRole("CALCULATOR");
+        calculator.setVerified(true);
 
         userService.saveCalculator(calculator);
 

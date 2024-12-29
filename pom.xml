@@ -16,7 +16,7 @@
 
     <properties>
          <java.version>17</java.version>
-        <sonar.projectKey>noutailaa_MicroServiceStockage_CalculAutomatiseRacinePolynome</sonar.projectKey>
+        <sonar.projectKey>NOUTAILAA_MicroServiceStockage_CalculAutomatiseRacinePolynome</sonar.projectKey>
          <sonar.organization>noutailaa</sonar.organization>
          <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>

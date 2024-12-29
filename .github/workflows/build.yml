@@ -15,14 +15,11 @@ jobs:
     services:
       mysql:
         image: mysql:8.0
-        container_name: mysqldb
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: polynome
         ports:
           - "3307:3306"
-        networks:
-          - app-network
         healthcheck:
           test: [ "CMD-SHELL", "mysqladmin ping -h localhost -uroot -proot || exit 1" ]
           interval: 10s
@@ -90,4 +87,4 @@ jobs:
 
       - name: Show MySQL logs (debug)
         if: failure()
-        run: docker logs mysqldb
+        run: docker logs $(docker ps -q --filter "ancestor=mysql:8.0")
